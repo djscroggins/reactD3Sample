@@ -18,6 +18,29 @@ appdata.forEach((d, i) => {
 });
 
 class App extends Component {
+
+    constructor(props){
+        super(props);
+        this.onResize = this.onResize.bind(this);
+        this.state = {screenWidth: 1000, screenHeight: 500};
+
+    }
+
+    // On mounting, set up listener for window resize
+    componentDidMount() {
+        window.addEventListener('resize', this.onResize, false);
+        this.onResize();
+    }
+
+    // Reset state based on current window size
+    onResize() {
+        this.setState({
+            screenWidth: window.innerWidth,
+            screenHeight: window.innerHeight - 70
+        });
+    }
+
+
     render() {
 
         const colorScale = scaleThreshold().domain([5, 10, 20, 30, 50])
@@ -30,9 +53,9 @@ class App extends Component {
                     <h2>d3ia dashboard</h2>
                 </div>
                 <div>
-                    <StreamGraph colorScale={colorScale} data={appdata} size={[1000, 250]}/>
-                    <WorldMap colorScale={colorScale} data={appdata} size={[500, 400]}/>
-                    <BarChart colorScale={colorScale} data={appdata} size={[500, 400]}/>
+                    <StreamGraph colorScale={colorScale} data={appdata} size={[this.state.screenWidth, this.state.screenHeight /2]}/>
+                    <WorldMap colorScale={colorScale} data={appdata} size={[this.state.screenWidth /2, this.state.screenHeight / 2]}/>
+                    <BarChart colorScale={colorScale} data={appdata} size={[this.state.screenWidth /2, this.state.screenHeight / 2]}/>
 
                 </div>
 
